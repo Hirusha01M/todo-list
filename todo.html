@@ -1,0 +1,209 @@
+<html>
+<head> 
+
+    <title>To Do</title>
+    <style>
+
+
+        body {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            height: 100vh;
+            padding: 150px;
+            background: linear-gradient(to bottom,  #36a2eb 0, #273b4e 50%);
+        }
+
+        .container, #tolist-container {
+            max-width: 400px;
+            width: 100%;
+            background: #99dae9;
+            padding: 25px 30px;
+            border-radius: 20px;
+            margin: 10px;
+        }
+
+        .container .title, #tolist-container .title {
+            font-family: "TimesNewRoman";
+            font-size: 35px;
+            position: relative;
+            text-align: center;
+            color: #2C3E50; 
+        }
+
+        .container .form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 20px 0 12px 0;
+        }
+
+        form .input-box {
+            margin: 15px 0 12px 0;
+            width: calc(100% - 60px);
+        }
+
+        form .input-box input {
+            height: 45px;
+            width: 100%;
+            outline: none;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            padding-left: 15px;
+            font-size: 16px;
+            border-bottom-width: 2px;
+        }
+
+        form .button, form .button1 {
+            height: 35px;
+            margin: 15px 0 12px 0;
+            display: flex;
+            justify-content: center;
+            width: 100%;
+        }
+
+        form .button input, form .button1 input {
+            height: 100%;
+            width: 220px;
+            font-size: 15px;
+            letter-spacing: 1px;
+            background: rgb(100, 230, 100);
+            color: rgb(0, 0, 0);
+            border: none;
+            cursor: pointer;
+            text-align: center;
+            border-radius: 10px;
+        }
+
+        form .button1 input {
+            background: #dfc55e;
+        }
+
+        form .button2 input {
+            background: rgb(179, 179, 212);
+        }
+
+        #tolist {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .toDoListCenter {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            width: 100%;
+            justify-content: flex-start;
+        }
+
+        .toDoListCenter .chkBoxes {
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+        }
+
+        form .button2 input:hover {
+            background: rgb(226, 179, 92)
+        }
+    </style>
+
+    <script>
+        function buttonUser() {
+            let toDoText = document.getElementById("userInput").value;
+            if (toDoText === "") {
+                alert("Add a Task in the Textbox!");
+            } else {
+                let chkBox = document.createElement("input");
+                chkBox.setAttribute("type", "checkbox");
+                chkBox.setAttribute("name", toDoText);
+                chkBox.setAttribute("class", "chkBoxes");
+                let toDoLabel = document.createElement("label");
+                toDoLabel.setAttribute("class", "toDoName");
+                let nodeText = document.createTextNode(toDoText);
+                toDoLabel.appendChild(nodeText);
+                let toDoListDiv = document.createElement("div");
+                toDoListDiv.setAttribute("class", "toDoListCenter");
+                toDoListDiv.appendChild(chkBox);
+                toDoListDiv.appendChild(toDoLabel);
+                let tolist = document.getElementById("tolist");
+                tolist.appendChild(toDoListDiv);
+                document.getElementById("userInput").value = "";
+            }
+        }
+
+        function toDoDelete() {
+            let chkBox = document.getElementsByClassName("chkBoxes");
+            let tolist = document.getElementById("tolist");
+            for (let i = chkBox.length - 1; i > -1; i--) {
+                if (chkBox[i].checked) {
+                    tolist.childNodes[i].remove();
+                    alert("Deleted Successfully");
+                }
+            }
+        }
+
+        function updateToDo() {
+            let chkBox = document.getElementsByClassName("chkBoxes");
+            let tolist = document.getElementById("tolist");
+            for (let i = chkBox.length - 1; i > -1; i--) {
+                if (chkBox[i].checked) {
+                    let isBlank = true;
+                    let currentToDo = tolist.childNodes[i].lastChild.firstChild.nodeValue;
+                    while (isBlank == true) {
+                        let userUpdate = prompt("Update " + currentToDo);
+                        if (userUpdate != null && userUpdate != "") {
+                            tolist.childNodes[i].lastChild.firstChild.nodeValue = userUpdate;
+                            chkBox[i].checked = false;
+                            break;
+                        } else if (userUpdate == null) {
+                            alert("Update Cancelled.");
+                            chkBox[i].checked = false;
+                            break;
+                        } else {
+                            alert("There is no Input. Please Input the Name of the Task.");
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+
+</head>
+
+
+<body>
+    <div class="container">
+        <div class="title">Today Todo List</div>
+        <form action="#">
+            <div class="form" id="divForm">
+                <div class="title1">
+                    <h2>Enter A New Tasks:</h2>
+                </div>
+                <div class="input-box">
+                    <input type="text" id="userInput">
+                </div>
+                <br>
+                <div class="button">
+                    <input type="button" value="ADD TASKS" onclick="buttonUser()">
+                </div>
+                
+                <div class="button1">
+                    <input type="button" value="DELETE" onclick="toDoDelete()">
+                </div>
+                <div class="button1">
+                    <input type="button" value="UPDATE" style="background: rgb(182, 182, 46); color: black;" onclick="updateToDo()">
+                </div>
+            </div>
+        </form>
+    </div>
+    <div id="tolist-container">
+        <div class="title">Tasks</div>
+        <div id="tolist"></div>
+    </div>
+
+</body>
+
+</html>
